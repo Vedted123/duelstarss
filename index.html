@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#090b18" />
+<title>VedBlocks</title>
+<style>
+:root{
+  --bg:#070914;--panel:#10152a;--panel2:#161d38;--line:rgba(255,255,255,.11);
+  --text:#f7f9ff;--muted:#9eabc8;--blue:#6e7bff;--cyan:#48d9ff;--green:#42e59b;
+  --gold:#ffd66b;--danger:#ff667f;--shadow:0 24px 70px rgba(0,0,0,.45)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{overflow-x:hidden;background:
+ radial-gradient(circle at 8% 0%,rgba(110,123,255,.22),transparent 34%),
+ radial-gradient(circle at 95% 20%,rgba(72,217,255,.12),transparent 30%),
+ linear-gradient(180deg,#090c1b,#060711 70%)}
+button,input{font:inherit}button{cursor:pointer;color:inherit}
+.hidden{display:none!important}
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr) 330px;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;padding:24px 18px;border-right:1px solid var(--line);background:rgba(7,9,20,.82);backdrop-filter:blur(20px);z-index:5}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 28px}.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,var(--blue),var(--cyan));box-shadow:0 10px 30px rgba(89,120,255,.35);font-weight:1000;font-size:22px}.brand b{font-size:22px}.brand small{display:block;margin-top:2px;color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.nav{display:grid;gap:8px}.nav button{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;border:1px solid transparent;border-radius:13px;background:transparent;text-align:left;font-weight:800;color:#c7d0e8}.nav button.active,.nav button:hover{background:rgba(110,123,255,.13);border-color:rgba(110,123,255,.22);color:#fff}.nav span{width:24px;text-align:center}
+.profile-mini{position:absolute;left:18px;right:18px;bottom:18px;padding:13px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045)}.profile-mini .row{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#7c63ff,#36c9ff);font-weight:1000}.profile-mini b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-mini small{color:var(--muted)}
+.main{padding:30px clamp(20px,4vw,54px) 60px;min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:30px}.welcome h1{margin:0;font-size:clamp(30px,4vw,52px);letter-spacing:-.04em}.welcome p{margin:8px 0 0;color:var(--muted)}.online-pill{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid rgba(66,229,155,.2);border-radius:999px;background:rgba(66,229,155,.08);font-size:12px;font-weight:850;color:#b9ffdf}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.hero{position:relative;overflow:hidden;padding:30px;border:1px solid rgba(110,123,255,.25);border-radius:28px;background:linear-gradient(135deg,rgba(110,123,255,.18),rgba(72,217,255,.07));box-shadow:var(--shadow)}.hero:after{content:"VB";position:absolute;right:18px;bottom:-42px;font-size:180px;font-weight:1000;color:rgba(255,255,255,.035);letter-spacing:-.12em}.hero h2{position:relative;z-index:1;margin:0;max-width:650px;font-size:clamp(26px,3.8vw,46px);line-height:1.04}.hero p{position:relative;z-index:1;max-width:670px;margin:14px 0 0;color:#bbc6e5;line-height:1.55}.hero-actions{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.primary,.secondary,.danger{border-radius:12px;padding:11px 16px;font-weight:900}.primary{border:0;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#08101c;box-shadow:0 10px 28px rgba(72,217,255,.18)}.secondary{border:1px solid var(--line);background:rgba(255,255,255,.07)}.danger{border:1px solid rgba(255,102,127,.25);background:rgba(255,102,127,.1);color:#ffc1cb}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin:34px 0 15px}.section-title h2{margin:0;font-size:22px}.section-title p{margin:0;color:var(--muted);font-size:13px}.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.game-card{position:relative;min-height:360px;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--panel);box-shadow:0 18px 45px rgba(0,0,0,.25);transition:transform .2s,border-color .2s}.game-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.22)}.game-art{height:190px;position:relative;overflow:hidden}.game-art:before,.game-art:after{content:"";position:absolute}.hoop .game-art{background:radial-gradient(circle at 70% 25%,#ffcc6b 0 6%,transparent 7%),linear-gradient(145deg,#4c1808,#ed6c17 48%,#191420)}.hoop .game-art:before{width:95px;height:95px;right:28px;top:32px;border-radius:50%;background:repeating-radial-gradient(circle,#f47a20 0 10px,#25110a 11px 13px);box-shadow:0 16px 26px rgba(0,0,0,.35)}.traitor .game-art{background:radial-gradient(circle at 50% 25%,rgba(255,223,115,.3),transparent 24%),linear-gradient(145deg,#17131e,#3b2d20 55%,#08070c)}.traitor .game-art:before{left:50%;top:30px;width:82px;height:110px;transform:translateX(-50%);clip-path:polygon(50% 0,90% 18%,80% 88%,50% 100%,20% 88%,10% 18%);background:linear-gradient(180deg,#ffe991,#9d6f16);filter:drop-shadow(0 14px 18px #000)}.crossfire .game-art{background:linear-gradient(135deg,#12070a,#4b0911 43%,#071725 44%,#031017)}.crossfire .game-art:before{left:20px;right:20px;top:50%;height:4px;background:linear-gradient(90deg,transparent,#ff3344,#fff,#48d9ff,transparent);box-shadow:0 0 22px #ff3344}.crossfire .game-art:after{width:120px;height:120px;left:50%;top:50%;transform:translate(-50%,-50%);border:3px solid rgba(255,255,255,.6);border-radius:50%;box-shadow:0 0 32px rgba(72,217,255,.3)}.game-tag{position:absolute;left:14px;top:14px;padding:6px 9px;border-radius:999px;background:rgba(4,7,15,.68);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px);font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.game-info{padding:18px}.game-info h3{margin:0;font-size:23px}.game-info p{min-height:58px;margin:8px 0 16px;color:var(--muted);font-size:13px;line-height:1.45}.game-actions{display:flex;gap:8px}.game-actions button{flex:1}
+.social{position:sticky;top:0;height:100vh;padding:22px 18px;border-left:1px solid var(--line);background:rgba(7,9,20,.72);backdrop-filter:blur(18px);overflow:auto}.social-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.social-head h2{margin:0;font-size:19px}.count{padding:4px 8px;border-radius:999px;background:rgba(110,123,255,.15);color:#cfd4ff;font-size:11px;font-weight:900}.add-box{padding:13px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.04)}.add-box label{display:block;margin-bottom:7px;color:var(--muted);font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.input-row{display:flex;gap:7px}.input-row input,.modal input{width:100%;min-width:0;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.25);color:#fff;outline:none}.input-row input:focus,.modal input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(72,217,255,.1)}.input-row button{padding:0 13px;border:0;border-radius:11px;background:var(--blue);font-weight:1000}.helper{min-height:18px;margin:7px 0 0;color:var(--muted);font-size:11px;line-height:1.4}.social-section{margin-top:22px}.social-section h3{margin:0 0 9px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8592b0}.friend-list{display:grid;gap:8px}.friend{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035)}.friend-avatar{position:relative;width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#6858d9,#278fb8);font-weight:1000}.friend-avatar i{position:absolute;right:-2px;bottom:-2px;width:10px;height:10px;border-radius:50%;background:#68718a;border:2px solid #10152a}.friend-avatar i.online{background:var(--green)}.friend b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.friend small{display:block;margin-top:2px;color:var(--muted);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.friend button{padding:7px 9px;border:1px solid rgba(72,217,255,.23);border-radius:9px;background:rgba(72,217,255,.1);font-size:10px;font-weight:950;color:#aeeeff}.friend button:disabled{opacity:.35;cursor:not-allowed}.request-actions{display:flex;gap:5px}.request-actions button{padding:6px 8px}.empty{padding:16px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:#7f8aa5;font-size:12px}
+.page{display:none}.page.active{display:block}.profile-page{max-width:760px}.settings-card{margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.045)}.settings-card h3{margin:0 0 14px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.settings-card label{display:block;color:var(--muted);font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.settings-card input{width:100%;margin-top:7px;padding:12px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.22);color:#fff}.code-box{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:14px;background:rgba(110,123,255,.1);border:1px solid rgba(110,123,255,.22)}.code-box b{font-size:23px;letter-spacing:.12em;color:#dfe3ff}
+.modal-backdrop{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:18px;background:rgba(2,4,12,.76);backdrop-filter:blur(9px)}.modal{width:min(480px,100%);padding:26px;border:1px solid rgba(110,123,255,.32);border-radius:24px;background:linear-gradient(180deg,#171d38,#0d1225);box-shadow:var(--shadow)}.modal h2{margin:0;font-size:30px}.modal p{color:var(--muted);line-height:1.5}.modal label{display:block;margin:18px 0 7px;font-size:11px;font-weight:900;color:#bdc7e2;text-transform:uppercase;letter-spacing:.09em}.modal .primary{width:100%;margin-top:12px}.modal-status{min-height:20px;margin-top:9px;color:#ffc9d1;font-size:12px}
+#gameOverlay{position:fixed;inset:0;z-index:70;background:#03040a}.game-toolbar{position:absolute;left:12px;right:12px;top:10px;z-index:3;display:flex;align-items:center;justify-content:space-between;pointer-events:none}.game-toolbar .group{display:flex;gap:8px;pointer-events:auto}.floating{padding:9px 13px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(4,7,15,.72);backdrop-filter:blur(12px);box-shadow:0 8px 28px rgba(0,0,0,.3);font-weight:900}.floating.brand-chip{color:#dbe5ff}.game-frame{width:100%;height:100%;border:0;background:#05070d}.game-social-drawer{position:absolute;right:12px;top:58px;bottom:12px;z-index:5;width:min(350px,calc(100vw - 24px));display:none;padding:16px;border:1px solid var(--line);border-radius:20px;background:rgba(8,11,24,.96);box-shadow:var(--shadow);backdrop-filter:blur(18px);overflow:auto}.game-social-drawer.open{display:block}
+.toast{position:fixed;left:50%;bottom:24px;z-index:150;transform:translate(-50%,20px);opacity:0;padding:11px 17px;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(8,11,24,.95);box-shadow:var(--shadow);font-weight:850;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1180px){.shell{grid-template-columns:220px minmax(0,1fr)}.social{display:none}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.shell{display:block}.sidebar{position:relative;height:auto;padding:14px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding-bottom:12px}.nav{grid-template-columns:repeat(3,1fr)}.nav button{justify-content:center;padding:10px 8px}.nav button em{display:none}.profile-mini{display:none}.main{padding:20px 14px 40px}.topbar{align-items:flex-start}.game-grid{grid-template-columns:1fr}.game-card{min-height:330px}.settings-grid{grid-template-columns:1fr}.hero{padding:22px}.game-toolbar{top:7px;left:7px;right:7px}.floating{padding:8px 10px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">VB</div><div><b>VedBlocks</b><small>Play together</small></div></div>
+    <nav class="nav">
+      <button class="active" data-page="games"><span>🎮</span><em>Games</em></button>
+      <button data-page="friends"><span>👥</span><em>Friends</em></button>
+      <button data-page="profile"><span>⚙️</span><em>Profile</em></button>
+    </nav>
+    <div class="profile-mini"><div class="row"><div class="avatar" id="miniAvatar">V</div><div style="min-width:0"><b id="miniName">Connecting…</b><small id="miniCode">Friend code</small></div></div></div>
+  </aside>
+
+  <main class="main">
+    <section id="page-games" class="page active">
+      <div class="topbar"><div class="welcome"><h1 id="welcomeTitle">Welcome to VedBlocks</h1><p>Choose a game, invite friends, and jump into the same room.</p></div><div class="online-pill"><span class="dot"></span><span id="connectionText">Connecting</span></div></div>
+      <div class="hero">
+        <h2>Three games. One friends list. One place to play.</h2>
+        <p>VedBlocks keeps your friends connected while every game runs normally. Create a private room inside any game, and friends can join it directly from your online status.</p>
+        <div class="hero-actions"><button class="primary" data-launch="hoop">Play Hoop City</button><button class="secondary" id="heroFriends">Add a friend</button></div>
+      </div>
+      <div class="section-title"><div><h2>Choose a game</h2><p>Your game opens full screen.</p></div></div>
+      <div class="game-grid">
+        <article class="game-card hoop"><div class="game-art"><span class="game-tag">Sports · 1v1</span></div><div class="game-info"><h3>Hoop City</h3><p>Enter the basketball lobby, customize your player, and challenge another player to a private match.</p><div class="game-actions"><button class="primary" data-launch="hoop">Play</button><button class="secondary" data-info="hoop">Rooms</button></div></div></article>
+        <article class="game-card traitor"><div class="game-art"><span class="game-tag">Mystery · Social</span></div><div class="game-info"><h3>Traitor Game</h3><p>Explore the royal hall, complete duties, uncover the Chameleon, and survive meetings with up to ten players.</p><div class="game-actions"><button class="primary" data-launch="traitor">Play</button><button class="secondary" data-info="traitor">Rooms</button></div></div></article>
+        <article class="game-card crossfire"><div class="game-art"><span class="game-tag">Action · Online</span></div><div class="game-info"><h3>Crossfire Online</h3><p>Choose weapons, vote on maps and modes, and fight friends in a fast multiplayer arena.</p><div class="game-actions"><button class="primary" data-launch="crossfire">Play</button><button class="secondary" data-info="crossfire">Rooms</button></div></div></article>
+      </div>
+    </section>
+
+    <section id="page-friends" class="page">
+      <div class="topbar"><div class="welcome"><h1>Friends</h1><p>Add people by exact username or friend code, then join their game.</p></div></div>
+      <div class="settings-card"><h3>Add a friend</h3><div class="input-row"><input id="friendInputMain" maxlength="24" placeholder="Username or friend code"/><button id="addFriendMain">Add</button></div><p class="helper" id="friendStatusMain"></p></div>
+      <div class="settings-card"><h3>Friend requests</h3><div id="requestListMain" class="friend-list"></div></div>
+      <div class="settings-card"><h3>Your friends</h3><div id="friendListMain" class="friend-list"></div></div>
+    </section>
+
+    <section id="page-profile" class="page profile-page">
+      <div class="topbar"><div class="welcome"><h1>Your profile</h1><p>This username appears in VedBlocks and is sent to each game.</p></div></div>
+      <div class="settings-card"><h3>Identity</h3><div class="settings-grid"><label>Username<input id="profileName" maxlength="18" placeholder="Choose a username"/></label><label>Friend code<div class="code-box" style="margin-top:7px"><b id="profileCode">--------</b><button class="secondary" id="copyCode">Copy</button></div></label></div><button class="primary" id="saveProfile" style="margin-top:14px">Save profile</button><p class="helper" id="profileStatus"></p></div>
+      <div class="settings-card"><h3>How joining works</h3><p style="color:var(--muted);line-height:1.6;margin:0">Create or join a private room inside a game. VedBlocks reads that room code from the game and shows a Join button to your friends. Clicking Join opens the same game and automatically enters that room.</p></div>
+    </section>
+  </main>
+
+  <aside class="social" id="socialPanel">
+    <div class="social-head"><h2>Friends</h2><span class="count" id="friendCount">0</span></div>
+    <div class="add-box"><label>Add friend</label><div class="input-row"><input id="friendInput" maxlength="24" placeholder="Username or code"/><button id="addFriend">+</button></div><p class="helper" id="friendStatus"></p></div>
+    <div class="social-section"><h3>Requests</h3><div id="requestList" class="friend-list"></div></div>
+    <div class="social-section"><h3>Online & friends</h3><div id="friendList" class="friend-list"></div></div>
+  </aside>
+</div>
+
+<div id="onboarding" class="modal-backdrop hidden"><div class="modal"><div class="logo" style="margin-bottom:18px">VB</div><h2>Create your VedBlocks profile</h2><p>Pick a unique username. Friends can find you with this username or your friend code.</p><label>Username</label><input id="onboardName" maxlength="18" placeholder="Example: Ved123"/><button class="primary" id="createProfile">Continue</button><div class="modal-status" id="onboardStatus"></div></div></div>
+
+<div id="gameOverlay" class="hidden">
+  <div class="game-toolbar"><div class="group"><button class="floating" id="backToHub">← VedBlocks</button><span class="floating brand-chip" id="gameTitleChip">Game</span></div><div class="group"><button class="floating" id="gameFriendsBtn">👥 Friends</button></div></div>
+  <iframe id="gameFrame" class="game-frame" allow="fullscreen; autoplay; clipboard-read; clipboard-write" referrerpolicy="no-referrer"></iframe>
+  <div class="game-social-drawer" id="gameSocialDrawer"><div class="social-head"><h2>Join a friend</h2><button class="secondary" id="closeGameFriends">Close</button></div><div id="gameFriendList" class="friend-list"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script>
+'use strict';
+const firebaseConfig={
+  apiKey:'AIzaSyCVwqfIkOjuivsdzs1yub6wJlGmeM_noC0',
+  authDomain:'locationtrackerproj.firebaseapp.com',
+  databaseURL:'https://locationtrackerproj-default-rtdb.firebaseio.com',
+  projectId:'locationtrackerproj',
+  storageBucket:'locationtrackerproj.firebasestorage.app',
+  messagingSenderId:'504818720611',
+  appId:'1:504818720611:web:cfc4adfdeb9255ec88fd56'
+};
+const GAMES={
+  hoop:{title:'Hoop City',src:'games/hoop-city.html'},
+  traitor:{title:'Traitor Game',src:'games/traitor-game.html'},
+  crossfire:{title:'Crossfire Online',src:'games/crossfire-online.html'}
+};
+const $=id=>document.getElementById(id);
+let auth=null,db=null,uid=null,profile=null,currentGame=null;
+let users={},presence={},friends={},requests={};
+let listenersStarted=false,lastGameState={roomCode:'',status:''};
+
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function cleanName(value){return String(value||'').replace(/[^a-zA-Z0-9 _-]/g,'').replace(/\s+/g,' ').trim().slice(0,18);}
+function nameKey(value){return cleanName(value).toLowerCase().replace(/[^a-z0-9]/g,'');}
+function cleanCode(value){return String(value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10);}
+function initials(name){const p=String(name||'V').trim().split(/\s+/);return (p.length>1?(p[0][0]+p[p.length-1][0]):p[0].slice(0,2)).toUpperCase();}
+function randomCode(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let out='';for(let i=0;i<8;i++)out+=chars[Math.floor(Math.random()*chars.length)];return out;}
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1800);}
+function setConnection(text){$('connectionText').textContent=text;}
+function userPath(id){return 'basketballLobby/vedblocks/users/'+id;}
+
+async function claimUsername(username,oldUsername=''){
+  const key=nameKey(username);if(key.length<3)throw new Error('Use at least 3 letters or numbers.');
+  const ref=db.ref('basketballLobby/vedblocks/usernames/'+key);
+  const result=await ref.transaction(current=>current&&current!==uid?current:uid);
+  if(!result.committed||result.snapshot.val()!==uid)throw new Error('That username is already taken.');
+  const oldKey=nameKey(oldUsername);
+  if(oldKey&&oldKey!==key){const oldRef=db.ref('basketballLobby/vedblocks/usernames/'+oldKey);const snap=await oldRef.once('value');if(snap.val()===uid)await oldRef.remove();}
+}
+async function claimFriendCode(){
+  for(let i=0;i<12;i++){
+    const code=randomCode(),ref=db.ref('basketballLobby/vedblocks/friendCodes/'+code);
+    const result=await ref.transaction(current=>current||uid);
+    if(result.committed&&result.snapshot.val()===uid)return code;
+  }
+  throw new Error('Could not create a friend code.');
+}
+async function createOrUpdateProfile(username,isNew=false){
+  username=cleanName(username);if(username.length<3)throw new Error('Username must be at least 3 characters.');
+  await claimUsername(username,profile?.username||'');
+  let friendCode=profile?.friendCode;if(!friendCode)friendCode=await claimFriendCode();
+  const next={username,friendCode,updatedAt:firebase.database.ServerValue.TIMESTAMP};
+  if(isNew)next.createdAt=firebase.database.ServerValue.TIMESTAMP;
+  await db.ref(userPath(uid)).update(next);profile={...(profile||{}),...next};renderProfile();
+}
+async function start(){
+  try{
+    firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();
+    const result=await auth.signInAnonymously();uid=result.user.uid;setConnection('Online');
+    const snap=await db.ref(userPath(uid)).once('value');profile=snap.val();
+    if(!profile){$('onboarding').classList.remove('hidden');$('onboardName').focus();}
+    else{renderProfile();startListeners();await setHubPresence();}
+  }catch(err){console.error(err);setConnection('Friend service offline');toast('Games work, but VedBlocks friends could not connect.');}
+}
+async function setHubPresence(){
+  if(!db||!uid||!profile)return;
+  const ref=db.ref('basketballLobby/vedblocks/presence/'+uid);
+  await ref.onDisconnect().update({online:false,lastSeen:firebase.database.ServerValue.TIMESTAMP,status:'Offline'});
+  await ref.set({online:true,lastSeen:firebase.database.ServerValue.TIMESTAMP,game:'hub',roomCode:'',status:'Browsing VedBlocks',username:profile.username});
+}
+async function updatePresence(data){
+  if(!db||!uid||!profile)return;
+  await db.ref('basketballLobby/vedblocks/presence/'+uid).update({online:true,lastSeen:firebase.database.ServerValue.TIMESTAMP,username:profile.username,...data}).catch(()=>{});
+}
+function startListeners(){
+  if(listenersStarted||!db||!uid)return;listenersStarted=true;
+  db.ref('basketballLobby/vedblocks/users').on('value',s=>{users=s.val()||{};renderSocial();});
+  db.ref('basketballLobby/vedblocks/presence').on('value',s=>{presence=s.val()||{};renderSocial();});
+  db.ref('basketballLobby/vedblocks/friends/'+uid).on('value',s=>{friends=s.val()||{};renderSocial();});
+  db.ref('basketballLobby/vedblocks/requests/'+uid).on('value',s=>{requests=s.val()||{};renderSocial();});
+}
+function renderProfile(){
+  if(!profile)return;const name=profile.username||'Player',code=profile.friendCode||'--------';
+  $('miniName').textContent=name;$('miniCode').textContent=code;$('miniAvatar').textContent=initials(name);
+  $('welcomeTitle').textContent='Welcome, '+name;$('profileName').value=name;$('profileCode').textContent=code;
+}
+function statusFor(id){
+  const p=presence[id]||{};if(!p.online)return 'Offline';
+  if(p.game&&GAMES[p.game])return p.status||('Playing '+GAMES[p.game].title);
+  return p.status||'Online';
+}
+function canJoin(id){const p=presence[id]||{};return !!(p.online&&p.game&&GAMES[p.game]);}
+function friendRow(id,request=false){
+  const u=users[id]||{},p=presence[id]||{},name=u.username||p.username||'Player';
+  if(request)return `<div class="friend"><div class="friend-avatar">${escapeHtml(initials(name))}<i class="${p.online?'online':''}"></i></div><div><b>${escapeHtml(name)}</b><small>Friend request</small></div><div class="request-actions"><button data-accept="${id}">✓</button><button data-decline="${id}" style="color:#ffb3c0">×</button></div></div>`;
+  return `<div class="friend"><div class="friend-avatar">${escapeHtml(initials(name))}<i class="${p.online?'online':''}"></i></div><div><b>${escapeHtml(name)}</b><small>${escapeHtml(statusFor(id))}</small></div><button data-join="${id}" ${canJoin(id)?'':'disabled'}>Join</button></div>`;
+}
+function renderSocial(){
+  const friendIds=Object.keys(friends).filter(id=>friends[id]);
+  friendIds.sort((a,b)=>Number(!!presence[b]?.online)-Number(!!presence[a]?.online)||(users[a]?.username||'').localeCompare(users[b]?.username||''));
+  const requestIds=Object.keys(requests).filter(id=>requests[id]);
+  const friendHtml=friendIds.length?friendIds.map(id=>friendRow(id)).join(''):'<div class="empty">No friends yet.</div>';
+  const requestHtml=requestIds.length?requestIds.map(id=>friendRow(id,true)).join(''):'<div class="empty">No new requests.</div>';
+  ['friendList','friendListMain','gameFriendList'].forEach(id=>{if($(id))$(id).innerHTML=friendHtml});
+  ['requestList','requestListMain'].forEach(id=>{if($(id))$(id).innerHTML=requestHtml});
+  $('friendCount').textContent=String(friendIds.length);
+}
+async function addFriend(raw,statusId){
+  const text=String(raw||'').trim();const status=$(statusId);status.textContent='Searching…';
+  try{
+    if(!uid||!db)throw new Error('Still connecting.');
+    let target=null;const code=cleanCode(text);
+    if(code.length>=6){target=(await db.ref('basketballLobby/vedblocks/friendCodes/'+code).once('value')).val();}
+    if(!target){const key=nameKey(text);if(key)target=(await db.ref('basketballLobby/vedblocks/usernames/'+key).once('value')).val();}
+    if(!target)throw new Error('No VedBlocks player found.');
+    if(target===uid)throw new Error('That is your own account.');
+    if(friends[target])throw new Error('You are already friends.');
+    if(requests[target]){await acceptRequest(target);status.textContent='Friend added.';return;}
+    await db.ref('basketballLobby/vedblocks/requests/'+target+'/'+uid).set({from:uid,createdAt:firebase.database.ServerValue.TIMESTAMP});
+    status.textContent='Request sent.';
+  }catch(err){status.textContent=err.message||'Could not add friend.';}
+}
+async function acceptRequest(id){
+  const updates={};updates['basketballLobby/vedblocks/friends/'+uid+'/'+id]=true;updates['basketballLobby/vedblocks/friends/'+id+'/'+uid]=true;updates['basketballLobby/vedblocks/requests/'+uid+'/'+id]=null;updates['basketballLobby/vedblocks/requests/'+id+'/'+uid]=null;await db.ref().update(updates);toast('Friend added');
+}
+async function declineRequest(id){await db.ref('basketballLobby/vedblocks/requests/'+uid+'/'+id).remove();}
+function launchGame(gameId,roomCode=''){
+  const game=GAMES[gameId];if(!game)return;currentGame=gameId;lastGameState={roomCode:roomCode||'',status:'Starting '+game.title};
+  const q=new URLSearchParams({vbName:profile?.username||'Player',vbAuto:'1'});if(roomCode)q.set('vbRoom',roomCode);
+  $('gameTitleChip').textContent=game.title;$('gameFrame').src=game.src+'?'+q.toString();$('gameOverlay').classList.remove('hidden');document.body.style.overflow='hidden';
+  updatePresence({game:gameId,roomCode:roomCode||'',status:'Starting '+game.title});
+}
+function closeGame(){
+  $('gameSocialDrawer').classList.remove('open');$('gameOverlay').classList.add('hidden');$('gameFrame').src='about:blank';currentGame=null;document.body.style.overflow='';setHubPresence();
+}
+function joinFriend(id){
+  const p=presence[id]||{};if(!canJoin(id))return toast('That friend is not currently in a game.');
+  launchGame(p.game,p.roomCode||'');toast('Joining '+(users[id]?.username||'friend'));
+}
+function switchPage(page){
+  document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+page));
+  document.querySelectorAll('.nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===page));
+}
+function roomInfo(game){
+  const text={hoop:'Open Private in Hoop City, create a 6-character room, and your friends can join from VedBlocks.',traitor:'Create any private castle room code. VedBlocks will show that exact room to your friends.',crossfire:'Open Private in Crossfire, create a 4-character room, and wait for your friend to join.'}[game];toast(text);
+}
+
+window.addEventListener('message',event=>{
+  const data=event.data;if(!data||data.type!=='vedblocks-game-state'||!currentGame)return;
+  const roomCode=String(data.roomCode||'');const status=String(data.status||('Playing '+GAMES[currentGame].title)).slice(0,80);
+  if(roomCode!==lastGameState.roomCode||status!==lastGameState.status){lastGameState={roomCode,status};updatePresence({game:currentGame,roomCode,status});}
+});
+document.addEventListener('click',event=>{
+  const launch=event.target.closest('[data-launch]');if(launch){launchGame(launch.dataset.launch);return;}
+  const info=event.target.closest('[data-info]');if(info){roomInfo(info.dataset.info);return;}
+  const join=event.target.closest('[data-join]');if(join){joinFriend(join.dataset.join);return;}
+  const accept=event.target.closest('[data-accept]');if(accept){acceptRequest(accept.dataset.accept);return;}
+  const decline=event.target.closest('[data-decline]');if(decline){declineRequest(decline.dataset.decline);return;}
+});
+document.querySelectorAll('.nav button').forEach(btn=>btn.onclick=()=>switchPage(btn.dataset.page));
+$('heroFriends').onclick=()=>switchPage('friends');
+$('addFriend').onclick=()=>addFriend($('friendInput').value,'friendStatus');
+$('addFriendMain').onclick=()=>addFriend($('friendInputMain').value,'friendStatusMain');
+$('friendInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('addFriend').click()});
+$('friendInputMain').addEventListener('keydown',e=>{if(e.key==='Enter')$('addFriendMain').click()});
+$('createProfile').onclick=async()=>{const status=$('onboardStatus');status.textContent='Creating profile…';try{await createOrUpdateProfile($('onboardName').value,true);$('onboarding').classList.add('hidden');startListeners();await setHubPresence();toast('Welcome to VedBlocks');}catch(err){status.textContent=err.message||'Could not create profile.';}};
+$('onboardName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createProfile').click()});
+$('saveProfile').onclick=async()=>{const status=$('profileStatus');status.textContent='Saving…';try{await createOrUpdateProfile($('profileName').value,false);await updatePresence({username:profile.username});status.textContent='Profile saved.';}catch(err){status.textContent=err.message||'Could not save.';}};
+$('copyCode').onclick=async()=>{try{await navigator.clipboard.writeText(profile?.friendCode||'');toast('Friend code copied');}catch{toast('Code: '+(profile?.friendCode||''));}};
+$('backToHub').onclick=closeGame;$('gameFriendsBtn').onclick=()=>{$('gameSocialDrawer').classList.toggle('open')};$('closeGameFriends').onclick=()=>$('gameSocialDrawer').classList.remove('open');
+addEventListener('beforeunload',()=>{if(db&&uid)db.ref('basketballLobby/vedblocks/presence/'+uid).update({online:false,lastSeen:firebase.database.ServerValue.TIMESTAMP});});
+start();
+</script>
+</body>
+</html>
